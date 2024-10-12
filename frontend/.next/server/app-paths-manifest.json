@@ -1,0 +1,5 @@
+{
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/protected/page": "app/protected/page.js",
+  "/api/visualize/route": "app/api/visualize/route.js"
+}
