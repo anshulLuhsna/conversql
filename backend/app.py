@@ -73,6 +73,7 @@ def read_sqlite_query(sql, db, attempts=2):  # Added attempts parameter
 
 # Function to connect and query MySQL
 def read_mysql_query(sql, db_params, attempts=2):
+    conn = None  # Initialize conn to None
     try:
         conn = mysql.connector.connect(**db_params)
         cur = conn.cursor()
@@ -224,6 +225,7 @@ def parse_db_file(db_file_path):
 
 # Function to parse MySQL database and build context
 def parse_mysql_db(db_params):
+    conn = None
     try:
         conn = mysql.connector.connect(**db_params)
         cursor = conn.cursor()
