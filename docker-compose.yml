@@ -16,4 +16,19 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
-  
+
+  mysql:
+    image: mysql:latest  # Use the latest MySQL image
+    container_name: mysql_db  # Name of the container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # Set the root password
+      MYSQL_DATABASE: mydatabase  # Create a default database
+      MYSQL_USER: myuser  # Create a new user
+      MYSQL_PASSWORD: userpassword  # Set the user's password
+    ports:
+      - "3306:3306"  # Map port 3306 on the host to port 3306 on the container
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persist MySQL data
+
+volumes:
+  mysql_data:  # Define a named volume to persist MySQL data

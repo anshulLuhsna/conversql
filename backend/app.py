@@ -17,7 +17,7 @@ def get_worqhat_response_nano(question=" ", prompt=" ", context=" ", model="nano
     prompt_text = prompt[0] if prompt[0] is not None else ""
     question = question if question is not None else ""
     context = context if context is not None else ""
-
+    print("Prompt: ", prompt[0])
     url = "https://api.worqhat.com/api/ai/content/v4"
     payload = json.dumps({
     "question": prompt[0] + "Here is the user question: "+ question +"Here is the db context: "+ context ,
@@ -44,7 +44,7 @@ def get_worqhat_response_nano(question=" ", prompt=" ", context=" ", model="nano
 correctionPrompt = ["""
 You are an expert in converting English questions to SQL query! You have to correct the following query. 
 I am also giving you the error caused by it. Return only the sql query without anything else.
- Return only one query without any quotations
+ Return only one query without any quotations. Also return only one query at a time. Don't separate with semicolons.
 """]
 # Function to connect and query SQLite
 def read_sqlite_query(sql, db, attempts=2):  # Added attempts parameter
@@ -61,7 +61,7 @@ def read_sqlite_query(sql, db, attempts=2):  # Added attempts parameter
         if attempts > 0:
             print("Attempting to correct the query...")
             question = "I am getting an error while executing the following query: " + sql + "The error is: " + str(e)
-            newQuery = get_worqhat_response_nano(question, correctionPrompt[0], db, "large")
+            newQuery = get_worqhat_response_nano(question, correctionPrompt, db, "large")
             # print(newQuery)
             return read_sqlite_query(newQuery, db, attempts - 1)  # Recursive call
         else:
@@ -73,6 +73,7 @@ def read_sqlite_query(sql, db, attempts=2):  # Added attempts parameter
 
 # Function to connect and query MySQL
 def read_mysql_query(sql, db_params, attempts=2):
+    db_params = {'user': 'myuser', 'password': 'userpassword', 'host': 'mysql_db', 'port': 3306, 'database': 'mydatabase'}
     conn = None  # Initialize conn to None
     try:
         conn = mysql.connector.connect(**db_params)
@@ -87,11 +88,11 @@ def read_mysql_query(sql, db_params, attempts=2):
             print("Attempting to correct the query...")
             question = "I am getting an error while executing the following query: " + sql + "The error is: " + str(e)
             s = " ".join([str(item) for item in db_params.values()])
-            newQuery = get_worqhat_response_nano(question, correctionPrompt[0], s, "large")
-            # print(newQuery)
+            newQuery = get_worqhat_response_nano(question, correctionPrompt, s, "large")
+            print(newQuery)
             return read_mysql_query(newQuery, db_params, attempts - 1)  # Recursive call
         else:
-            return [], f"SQLite error: {e}"
+            return [], f"Mysql error: {e}"
         
     finally:
         if conn:
@@ -108,6 +109,7 @@ def read_database_query(sql, db_type, db_params):
         return read_sqlite_query(sql, db_params['db'])
 
     elif db_type == 'mysql':
+        print("DB PARAMS: ", db_params)
         return read_mysql_query(sql, db_params)
   
     else:
@@ -336,9 +338,10 @@ def execute_query():
 
         Please provide a clear and concise explanation of what the query does. 
         Explain it in a way that someone who doesn't know SQL can understand.
+        Return only one sql query. Do not separate them with a semicolon
         Dont include *s in response."""
     ]
-# Generate explanation using Gemini
+
     print("Here is the question, ",data.get('query'))
     question = "Here is the sql query: " + data.get('query') 
     s = ', '.join([str(item) for item in results])
