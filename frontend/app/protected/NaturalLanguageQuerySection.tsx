@@ -10,7 +10,7 @@ import {
 // import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { Mic, MicroscopeIcon } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useEffect } from "react";
+import { Key, useEffect } from "react";
 import VoiceInput from "./VoiceInput";
 
 
@@ -103,15 +103,33 @@ export default function NaturalLanguageQuerySection({ questionInput, generatedQu
         </>
       )}
       {queryResults?.length > 0 && (
-        <div className="border border-gray-300 rounded-lg p-4 shadow-md bg-gray-800 mt-6">
-          <h3 className="text-lg font-semibold mb-2">Query Results:</h3>
-          <ul>
-            {queryResults.map((row, index) => (
-              <li className="text-xl" key={index}>{JSON.stringify(row)}</li>
+  <div className="border border-gray-300 rounded-lg p-4 shadow-md bg-gray-800 mt-6">
+    <h3 className="text-lg font-semibold mb-2">Query Results:</h3>
+    <table className="table-auto w-full text-left text-xl">
+      <thead>
+        <tr>
+          {queryResults[0].map((_: any, columnIndex: Key | null | undefined) => (
+            <th key={columnIndex} className="border-b border-gray-600 py-2">
+              Column {typeof columnIndex === 'number' ? columnIndex + 1 : ''}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {queryResults.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+            {row.map((item: any, columnIndex: number) => (
+              <td key={columnIndex} className="border-b border-gray-600 py-2">
+              {item}
+              </td>
             ))}
-          </ul>
-        </div>
-      )}
+            </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
 
 
       {!naturalLanguageResponse && showSkeleton && (
