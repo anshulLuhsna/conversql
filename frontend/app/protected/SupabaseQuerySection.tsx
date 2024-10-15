@@ -38,13 +38,14 @@ export default function SupabaseQuerySection({ eventDescription, questions, disp
         onChange={(e) => setEventDescription(e.target.value)}
       />
       <div className="flex gap-4">
-        <div className="my-4">
-
-      <VoiceInput setQuestionInput={setEventDescription} />
-        </div>
       <Button variant="secondary" type="button" className="my-4" onClick={addQuestionDynamic}>
         Generate Query
       </Button>
+        <div className="my-4">
+
+      <VoiceInput setEventDescription={setEventDescription} />
+        </div>
+      
       </div>
       
 

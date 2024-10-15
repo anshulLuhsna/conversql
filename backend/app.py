@@ -253,7 +253,7 @@ def parse_mysql_db(db_params):
                 'columns': columns,
                 'rows': rows
             }
-
+        print(db_data)
         return db_data
 
     except mysql.connector.Error as e:

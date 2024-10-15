@@ -346,10 +346,10 @@ export default function ProtectedPage({ tableNames, user, tableData }: { user: a
         <div className="flex flex-col gap-12">
           {dbType === "Supabase" && (
             <SupabaseQuerySection 
-              eventDescription={eventDescription} 
+              eventDescription={questionInput} 
               questions={questions} 
               displayTableData={displayTableData} 
-              setEventDescription={setEventDescription} 
+              setEventDescription={setQuestionInput} 
               addQuestionDynamic={addQuestionDynamic} 
               executeQuery={executeQuery} 
             />
