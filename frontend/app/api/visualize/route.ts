@@ -12,7 +12,7 @@ console.log("Here are the results:",    requestResult)
       headers: {
         'User-Agent': 'Apidog/1.0.0 (https://apidog.com)',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer sk-92426c0957c64a869f5cf988d27b90ad',
+        'Authorization': `Bearer ${process.env.WORQHAT_API_KEY}`,
       },
       body: JSON.stringify({
         question: `

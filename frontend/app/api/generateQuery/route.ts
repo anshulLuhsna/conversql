@@ -12,7 +12,7 @@ console.log(JSON.stringify(displayTableData), tableNames, questionInput)
       headers: {
         'User-Agent': 'Apidog/1.0.0 (https://apidog.com)',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer sk-92426c0957c64a869f5cf988d27b90ad',
+        'Authorization': `Bearer ${process.env.WORQHAT_API_KEY}`,
       },
       body: JSON.stringify({
         question: `You are the admin of a postgre sql Database. I want you to output an Sql query that makes the necessary 
