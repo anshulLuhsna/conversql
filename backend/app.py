@@ -146,7 +146,7 @@ def generate_query():
     question = data.get('questionInput')
     db_type = data.get('dbType')  # Correct the spelling here if needed
     db_params = data.get('dbParams') # Get MySQL connection parameters
-    print(db_params['db'])
+    
     if not question:
         return jsonify({'error': 'Missing question parameter'}), 400
     
