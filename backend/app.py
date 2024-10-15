@@ -146,7 +146,7 @@ def generate_query():
     question = data.get('questionInput')
     db_type = data.get('dbType')  # Correct the spelling here if needed
     db_params = data.get('dbParams') # Get MySQL connection parameters
-    
+    print(db_params['db'])
     if not question:
         return jsonify({'error': 'Missing question parameter'}), 400
     
@@ -155,7 +155,7 @@ def generate_query():
 
     # Check if the db_type is 'sqlite'
     if db_type == 'sqlite':
-        parse_db_file("./sqllite_1.db")
+        parse_db_file(db_params['db'])
         context = get_database_summary(chatbot_context.get('db_data', ""))  # Get context or default to empty
         print("THIS IS CONTEXT: ",context)
         response = get_worqhat_response_nano(question, prompt, context, "large")
@@ -334,12 +334,11 @@ def execute_query():
         summary = f"Found {num_results} records."
 
     prompt = [
-        """You are an AI assistant that explains SQL queries and their results.
+       """You are an AI assistant that explains SQL queries and their results in simple terms.
 
-        Please provide a clear and concise explanation of what the query does. 
-        Explain it in a way that someone who doesn't know SQL can understand.
-        Return only one sql query. Do not separate them with a semicolon
-        Dont include *s in response."""
+Please provide a clear, concise explanation of what the query does in a way that a beginner with no SQL knowledge can easily understand. Ensure the explanation is straightforward and free of technical jargon.
+
+Do not display the SQL query itself. If the query includes an asterisk (), replace it with the specific column names in the explanation. Avoid using asterisks () and diagrammatic representations in the response."""
     ]
 
     print("Here is the question, ",data.get('query'))
