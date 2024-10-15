@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   const { result: requestResult, generatedQuery } = await request.json();
 console.log("Here are the results:",    requestResult)
+  
   try {
     const options = {
       method: 'POST',

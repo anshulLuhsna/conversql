@@ -16,6 +16,8 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
+    env_file:
+      - ./frontend/.env
 
   mysql:
     image: mysql:latest  # Use the latest MySQL image

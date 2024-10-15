@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Mic } from 'lucide-react';
 
 
-const VoiceInput = ({ setQuestionInput } : {setQuestionInput:any}) => {
+const VoiceInput = (props: any) => {
   const [transcript, setTranscript] = useState('');
   const [isListening, setIsListening] = useState(false);
 
@@ -13,7 +13,7 @@ const VoiceInput = ({ setQuestionInput } : {setQuestionInput:any}) => {
     if (annyang) {
       // Enable debugging to see what's happening
       
-
+    
     // Call the debug function to set up logging
     
       // Define a command that captures any speech and updates the transcript
@@ -21,7 +21,8 @@ const VoiceInput = ({ setQuestionInput } : {setQuestionInput:any}) => {
         '*speech': (speech: string) => {
           console.log('Recognized speech:', speech);  // Debugging log
           setTranscript(speech);
-          setQuestionInput((prev:any) => `${prev} ${speech}`);
+          console.log(props)
+          props.setQuestionInput((prev:any) => `${prev} ${speech}`);
         }
       };
 
@@ -30,6 +31,7 @@ const VoiceInput = ({ setQuestionInput } : {setQuestionInput:any}) => {
       // Start listening when the component is mounted
       if (isListening) {
         console.log('Starting speech recognition...');
+        
         annyang.start({ autoRestart: true, continuous: true });
       } else {
         console.log('Stopping speech recognition...');

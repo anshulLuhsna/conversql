@@ -109,7 +109,7 @@ export default function ProtectedPage({ tableNames, user, tableData }: { user: a
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ eventDescription, displayTableData, tableNames }),
+        body: JSON.stringify({ questionInput, displayTableData, tableNames }),
       });
 
       if (!response.ok) {
@@ -185,7 +185,7 @@ export default function ProtectedPage({ tableNames, user, tableData }: { user: a
           )
         );
 
-        let newEventDescription = eventDescription + " " + error.message;
+        let newEventDescription = questionInput + " " + error.message;
         console.log(displayTableData)
         try {
           const response = await fetch("/api/generateQuery", {
@@ -346,10 +346,10 @@ export default function ProtectedPage({ tableNames, user, tableData }: { user: a
         <div className="flex flex-col gap-12">
           {dbType === "Supabase" && (
             <SupabaseQuerySection 
-              eventDescription={eventDescription} 
+              eventDescription={questionInput} 
               questions={questions} 
               displayTableData={displayTableData} 
-              setEventDescription={setEventDescription} 
+              setEventDescription={setQuestionInput} 
               addQuestionDynamic={addQuestionDynamic} 
               executeQuery={executeQuery} 
             />

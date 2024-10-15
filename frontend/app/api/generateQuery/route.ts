@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const { eventDescription, displayTableData, tableNames } = await request.json();
-console.log(JSON.stringify(displayTableData), tableNames)
+  const { questionInput, displayTableData, tableNames } = await request.json();
+console.log(JSON.stringify(displayTableData), tableNames, questionInput)
 
   try {
     const options = {
@@ -16,7 +16,7 @@ console.log(JSON.stringify(displayTableData), tableNames)
       },
       body: JSON.stringify({
         question: `You are the admin of a postgre sql Database. I want you to output an Sql query that makes the necessary 
-        changes to the db. Here is what the user wants: ${eventDescription}. Return only the query parameter in the json. Follow the following rules: 
+        changes to the db. Here is what the user wants: ${questionInput}. Return only the query parameter in the json. Follow the following rules: 
         1) The query must be in a proper syntax.
         2) Do not assume anything. Use only the schema provided.
         3) The default syntax should be that of SQL.
@@ -26,7 +26,8 @@ console.log(JSON.stringify(displayTableData), tableNames)
         Here is the data in the tables:
         ${JSON.stringify(displayTableData)}
         Use them while writing queries and make sure the column names and overall interface is correct.
-        Use the schema provided in table datas only.
+        If asked to insert data, make sure the data is inserted in the correct format. If asked to create another table,
+        make sure the table is created with the correct column names and data types. If asked to update data, make sure the data is updated correctly in one of the existing tables
         `,
         preserve_history: true,
         "model": "aicon-v4-large-160824",
