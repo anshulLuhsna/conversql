@@ -1,0 +1,24 @@
+RUN BOTH IN THE SQL EDITOR OF SUPABASE DASHBOARD:
+
+function 1 -
+
+CREATE OR REPLACE FUNCTION get_all_table_names()
+RETURNS SETOF text AS
+$$
+BEGIN
+  RETURN QUERY
+    SELECT tablename::text FROM pg_tables WHERE schemaname = 'public';
+END;
+$$ LANGUAGE plpgsql;
+
+function 2 - 
+
+CREATE OR REPLACE FUNCTION public.execute_query(query_string text)
+RETURNS SETOF record
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  EXECUTE query_string;
+END;
+$$;\
